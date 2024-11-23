@@ -1,0 +1,92 @@
+﻿using System;
+using System.ComponentModel;
+using System.Data;
+using System.Data.Common;
+using System.Drawing.Design;
+using System.Web.UI.Design;
+using AlphaOmega.Data;
+using AlphaOmega.Design;
+
+namespace Plugin.SqlSettingsProvider
+{
+	public class PluginSettings
+	{
+		private readonly Plugin _plugin;
+		private String _connectionString;
+		private String _providerName;
+
+		internal PluginSettings(Plugin plugin)
+			=> this._plugin = plugin;
+
+		[Category("Data")]
+		[Description("Connection string to the data source")]
+		[Editor(typeof(ConnectionStringEditor), typeof(UITypeEditor))]
+		public String ConnectionString
+		{
+			get => this._connectionString;
+			set
+			{
+				this._connectionString = String.IsNullOrEmpty(value)
+					? null
+					: value;
+				this._plugin.DataSource = null;
+			}
+		}
+
+		[Category("Data")]
+		[Description("Data source connection provider")]
+		[Editor(typeof(AdoNetProviderEditor), typeof(UITypeEditor))]
+		public String ProviderName
+		{
+			get => this._providerName;
+			set
+			{
+				if(String.IsNullOrEmpty(value))
+				{
+					this._providerName = null;
+					this._plugin.DataSource = null;
+				} else
+				{
+					foreach(DataRow row in DbProviderFactories.GetFactoryClasses().Rows)
+						if(value.Equals((String)row["InvariantName"], StringComparison.InvariantCultureIgnoreCase))
+						{
+							this._providerName = value;
+							this._plugin.DataSource = null;
+							return;
+						}
+					throw new ArgumentException($"Provider name '{value}' invalid");
+				}
+			}
+		}
+
+		public Boolean IsValid => this.ProviderName != null && this.ConnectionString != null;
+
+		/// <summary>Создать подключение к источнику данных</summary>
+		/// <returns>Подключение к источнику данных</returns>
+		internal DbConnector CreateConnector()
+		{
+			DbConnector result = new DbConnector(this.ProviderName, this.ConnectionString);
+			result.Command.CommandType = CommandType.StoredProcedure;
+			return result;
+		}
+
+		/// <summary>Подключения к источнику данных</summary>
+		internal DbConnection CreateConnection()
+		{
+			DbProviderFactory factory = DbProviderFactories.GetFactory(this.ProviderName);
+			DbConnection result = factory.CreateConnection();
+			result.ConnectionString = this.ConnectionString;
+			return result;
+		}
+
+		/// <summary>Комманда для выполнения в источнике данных</summary>
+		internal DbCommand CreateCommand(DbConnection connection)
+		{
+			DbProviderFactory factory = DbProviderFactories.GetFactory(this.ProviderName);
+			DbCommand result = factory.CreateCommand();
+			result.Connection = connection;
+			result.CommandType = CommandType.StoredProcedure;
+			return result;
+		}
+	}
+}

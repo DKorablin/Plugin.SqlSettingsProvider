@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <!--This to lines are added to separate build process between .NET & .NET Standard-->
+    <BaseOutputPath>$(MSBuildProjectDirectory)/obj/net20/$(MSBuildProjectName)/bin</BaseOutputPath>
+    <BaseIntermediateOutputPath>$(MSBuildProjectDirectory)/obj/net20/$(MSBuildProjectName)/obj</BaseIntermediateOutputPath>
+    <Version Condition="'$(Version)' == ''">1.1.9.0</Version>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{441AB8C3-9AD2-4143-9820-439E6D4F689E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Plugin.SqlSettingsProvider</RootNamespace>
+    <AssemblyName>Plugin.SqlSettingsProvider</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\..\bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="SAL.Flatbed, Version=1.2.9.0, Culture=neutral, PublicKeyToken=a8ac5fc45c3adb8d, processorArchitecture=MSIL">
+      <HintPath>..\packages\SAL.Flatbed.1.2.9\lib\net20\SAL.Flatbed.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.XML" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Data.Shared\DbConnector.cs">
+      <Link>Bll\DbConnector.cs</Link>
+    </Compile>
+    <Compile Include="..\WinForms.Shared\Design\AdoNetProviderEditor.cs">
+      <Link>UI\AdoNetProviderEditor.cs</Link>
+    </Compile>
+    <Compile Include="..\WinForms.Shared\Design\ListBoxEditorBase.cs">
+      <Link>UI\ListBoxEditorBase.cs</Link>
+    </Compile>
+    <Compile Include="Bll\SaveParameterArgs.cs" />
+    <Compile Include="Bll\SqlDataSource.cs" />
+    <Compile Include="Plugin.cs" />
+    <Compile Include="PluginSettings.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SqlSettingsProvider.cs" />
+    <Compile Include="Utils.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Scripts\sal.Application.Table.sql" />
+    <Content Include="Scripts\sal.ApplicationPlugins.Table.sql" />
+    <Content Include="Scripts\sal.GetPlugins.StoredProcedure.sql" />
+    <Content Include="Scripts\sal.ModifyPlugins.StoredProcedure.sql" />
+    <Content Include="Scripts\sal.Plugins.Table.sql" />
+    <Content Include="Scripts\sal.PluginValueNames.Table.sql" />
+    <Content Include="Scripts\sal.UserApplication.Table.sql" />
+    <Content Include="Scripts\sal.UserPlugin.Table.sql" />
+    <Content Include="Scripts\sal.Users.Table.sql" />
+    <Content Include="Scripts\settings.GetAplicationParameters.StoredProcedure.sql" />
+    <Content Include="Scripts\settings.GetPluginId.StoredProcedure.sql" />
+    <Content Include="Scripts\settings.LoadPluginParameter.StoredProcedure.sql" />
+    <Content Include="Scripts\settings.PluginValues2.Table.sql" />
+    <Content Include="Scripts\settings.SavePluginParameter.StoredProcedure.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="BeforeBuild">
+    <ItemGroup>
+      <AssemblyAttributes Include="AssemblyVersion">
+        <_Parameter1>$(Version)</_Parameter1>
+      </AssemblyAttributes>
+      <AssemblyAttributes Include="AssemblyFileVersion">
+        <_Parameter1>$(Version)</_Parameter1>
+      </AssemblyAttributes>
+      <AssemblyAttributes Include="AssemblyInformationalVersion">
+        <_Parameter1>$(Version)</_Parameter1>
+      </AssemblyAttributes>
+    </ItemGroup>
+    <MakeDir Directories="$(IntermediateOutputPath)" />
+    <WriteCodeFragment Language="C#" OutputFile="$(IntermediateOutputPath)Version.cs" AssemblyAttributes="@(AssemblyAttributes)" />
+    <ItemGroup>
+      <Compile Include="$(IntermediateOutputPath)Version.cs" />
+    </ItemGroup>
+  </Target>
+</Project>
