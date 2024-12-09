@@ -18,5 +18,5 @@ using System.Runtime.InteropServices;
 #endif
 [assembly: AssemblyCompany("Danila Korablin")]
 [assembly: AssemblyProduct("Plugin.SqlSettingsProvider")]
-[assembly: AssemblyCopyright("Copyright © Danila Korablin 2012-2019")]
+[assembly: AssemblyCopyright("Copyright © Danila Korablin 2012-2024")]
 #endif

@@ -13,11 +13,13 @@ namespace Plugin.SqlSettingsProvider
 		private PluginSettings _settings;
 		private SqlDataSource _dataSource;
 
-		internal TraceSource Trace => this._trace ?? (this._trace = Plugin.CreateTraceSource<Plugin>());
+		internal TraceSource Trace
+			=> this._trace ?? (this._trace = Plugin.CreateTraceSource<Plugin>());
 
 		internal IHost Host { get; }
 
-		Object IPluginSettings.Settings => this.Settings;
+		Object IPluginSettings.Settings
+			=> this.Settings;
 
 		public PluginSettings Settings
 		{
