@@ -181,6 +181,8 @@ namespace Plugin.SqlSettingsProvider
 						return Utils.DeserializeObject(result.Value);
 					} catch(Exception exc)
 					{
+						exc.Data.Add(nameof(key), key);
+						exc.Data.Add("Plugin", this._pluginWrapper.Name);
 						this._pluginHost.Trace.TraceData(TraceEventType.Error, 10, exc);
 						return null;
 					} else

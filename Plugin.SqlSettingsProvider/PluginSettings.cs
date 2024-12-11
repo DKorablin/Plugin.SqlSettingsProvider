@@ -34,7 +34,7 @@ namespace Plugin.SqlSettingsProvider
 		}
 
 		[Category("Data")]
-		[Description("Data source connection provider")]
+		[Description("Data source connection provider. (.NET5+ dynamic data providers are not supported)")]
 		[Editor(typeof(AdoNetProviderEditor), typeof(UITypeEditor))]
 		public String ProviderName
 		{
@@ -47,14 +47,22 @@ namespace Plugin.SqlSettingsProvider
 					this._plugin.DataSource = null;
 				} else
 				{
-					foreach(DataRow row in DbProviderFactories.GetFactoryClasses().Rows)
-						if(value.Equals((String)row["InvariantName"], StringComparison.InvariantCultureIgnoreCase))
-						{
-							this._providerName = value;
-							this._plugin.DataSource = null;
-							return;
-						}
-					throw new ArgumentException($"Provider name '{value}' invalid");
+					var rows = DbProviderFactories.GetFactoryClasses().Rows;
+					if(rows.Count > 0)//.NET 5+ FactoryClasses are not registered
+					{
+						Boolean isFound = false;
+						foreach(DataRow row in rows)
+							if(value.Equals((String)row["InvariantName"], StringComparison.InvariantCultureIgnoreCase))
+							{
+								isFound = true;
+								break;
+							}
+						if(!isFound)
+							throw new ArgumentException($"Provider name '{value}' invalid");
+					}
+
+					this._providerName = value;
+					this._plugin.DataSource = null;
 				}
 			}
 		}

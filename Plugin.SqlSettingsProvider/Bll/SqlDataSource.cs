@@ -207,7 +207,9 @@ namespace Plugin.SqlSettingsProvider.Bll
 				return;
 			else
 			{
-				String userName = Thread.CurrentPrincipal.Identity.IsAuthenticated
+				//.NET5+
+				//AppDomain.CurrentDomain.SetPrincipalPolicy(System.Security.Principal.PrincipalPolicy.UnauthenticatedPrincipal)
+				String userName = Thread.CurrentPrincipal?.Identity.IsAuthenticated == true
 					? Thread.CurrentPrincipal.Identity.Name
 					: Environment.UserName;
 
