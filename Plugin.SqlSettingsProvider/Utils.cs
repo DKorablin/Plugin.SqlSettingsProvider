@@ -6,7 +6,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Plugin.SqlSettingsProvider
 {
-	/// <summary>Разные утилиты</summary>
+	/// <summary>Various utilities</summary>
 	internal static class Utils
 	{
 		private sealed class UniversalDeserializationBinder : SerializationBinder
@@ -17,9 +17,9 @@ namespace Plugin.SqlSettingsProvider
 
 		private static BinaryFormatter BinSerializer => new BinaryFormatter() { AssemblyFormat = FormatterAssemblyStyle.Simple, TypeFormat = FormatterTypeStyle.TypesWhenNeeded, Binder = new UniversalDeserializationBinder(), };
 
-		/// <summary>Сериализовать объект в строку</summary>
-		/// <param name="obj">Объект для сериализации</param>
-		/// <returns>Сериализованный объект представленный в Base64</returns>
+		/// <summary>Serialize an object to a string</summary>
+		/// <param name="obj">Object to serialize</param>
+		/// <returns>Serialized object represented in Base64</returns>
 		public static String SerializeToString(Object obj)
 		{
 			_ = obj ?? throw new ArgumentNullException(nameof(obj));
@@ -28,9 +28,9 @@ namespace Plugin.SqlSettingsProvider
 			return Convert.ToBase64String(result);
 		}
 
-		/// <summary>Преобразовать объект Base64 строки в объект</summary>
-		/// <param name="str">Строка в формате Base64 для преобразования</param>
-		/// <returns>Десериализованный объект из Base64 строки</returns>
+		/// <summary>Convert a Base64 string to an object</summary>
+		/// <param name="str">The Base64 string to convert</param>
+		/// <returns>The deserialized object from the Base64 string</returns>
 		public static Object DeserializeFromString(String str)
 		{
 			_ = str ?? throw new ArgumentNullException(nameof(str));
@@ -39,10 +39,10 @@ namespace Plugin.SqlSettingsProvider
 			return Utils.DeserializeObject(bytes);
 		}
 
-		/// <summary>Сериализовать объект в массив байт</summary>
-		/// <remarks>Копипаст в <c>AlphaOmega.Windows.Forms.Flatbed.Utils</c></remarks>
-		/// <param name="obj">Объект для сериализации</param>
-		/// <returns>Сериализованный объект представленный в массиве байт</returns>
+		/// <summary>Serialize an object into a byte array</summary>
+		/// <remarks>Copy-pasted from <c>AlphaOmega.Windows.Forms.Flatbed.Utils</c></remarks>
+		/// <param name="obj">Object to serialize</param>
+		/// <returns>The serialized object represented in a byte array</returns>
 		public static Byte[] SerializeObject(Object obj)
 		{
 			_ = obj ?? throw new ArgumentNullException(nameof(obj));
@@ -55,10 +55,10 @@ namespace Plugin.SqlSettingsProvider
 			}
 		}
 
-		/// <summary>Преобразовать объект из массива байт в строку</summary>
-		/// <remarks>Копипаст в <c>AlphaOmega.Windows.Forms.Flatbed.Utils</c></remarks>
-		/// <param name="bytes">Массив байт для преобразования</param>
-		/// <returns>Десериализованный объект из массива байт</returns>
+		/// <summary>Convert an object from a byte array to a string</summary>
+		/// <remarks>Copy-pasted from <c>AlphaOmega.Windows.Forms.Flatbed.Utils</c></remarks>
+		/// <param name="bytes">Byte array to convert</param>
+		/// <returns>Deserialized object from a byte array</returns>
 		public static Object DeserializeObject(Byte[] bytes)
 		{
 			_ = bytes ?? throw new ArgumentNullException(nameof(bytes));

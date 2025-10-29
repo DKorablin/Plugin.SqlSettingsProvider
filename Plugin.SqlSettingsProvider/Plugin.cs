@@ -6,7 +6,7 @@ using SAL.Flatbed;
 
 namespace Plugin.SqlSettingsProvider
 {
-	/// <summary>Плагин для сохранения и загрузки настроек из MSSQL</summary>
+	/// <summary>Plugin for saving and loading settings from MSSQL</summary>
 	public class Plugin : ISettingsPluginProvider, IPluginSettings<PluginSettings>
 	{
 		private TraceSource _trace;
@@ -62,7 +62,7 @@ namespace Plugin.SqlSettingsProvider
 			if(plugin == this)
 				throw new InvalidOperationException("Cant configure self");
 			else if(this.DataSource == null)
-				return null;//Плагин не настроен
+				return null;//The plugin is not configured
 			else
 			{
 				IPluginDescription pluginWrapper = this.GetPluginWrapper(plugin);
@@ -76,8 +76,8 @@ namespace Plugin.SqlSettingsProvider
 			{
 				this.Trace.TraceEvent(TraceEventType.Error, 10, "{0} requires parent provider for storing connection settings", this.GetType());
 				return false;
-			}else
-			return true;
+			} else
+				return true;
 		}
 
 		Boolean IPlugin.OnDisconnection(DisconnectMode mode)

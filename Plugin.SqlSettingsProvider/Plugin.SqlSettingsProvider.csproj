@@ -1,0 +1,67 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFrameworks>net35</TargetFrameworks>
+		<OutputType>Library</OutputType>
+		<RootNamespace>Plugin.SqlSettingsProvider</RootNamespace>
+		<Deterministic>false</Deterministic>
+		<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+		<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+		<GenerateDocumentationFile>False</GenerateDocumentationFile>
+		<CopyLocalLockFileAssemblies>True</CopyLocalLockFileAssemblies>
+	</PropertyGroup>
+
+	<!--nuspec-->
+	<PropertyGroup>
+		<PackageId>AlphaOmega.SAL.Plugin.SqlSettingsProvider</PackageId>
+		<Version>$(Version)</Version>
+		<Title>SQL Settings provider plugin</Title>
+		<Description>Settings provider based on Microsoft SQL Server.</Description>
+		<Authors>Danila Korablin</Authors>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageReadmeFile>docs\README.md</PackageReadmeFile>
+		<PackageIcon>docs\SAL.100.png</PackageIcon>
+		<RepositoryUrl>https://github.com/DKorablin/Plugin.SqlSettingsProvider</RepositoryUrl>
+		<PackageTags>SAL;plugin;SqlServer;SQL;SettingsProvider</PackageTags>
+	</PropertyGroup>
+	<ItemGroup>
+	  <Compile Include="..\Data.Shared\DbConnector.cs" Link="Bll\DbConnector.cs" />
+	  <Compile Include="..\WinForms.Shared\Design\AdoNetProviderEditor.cs" Link="UI\AdoNetProviderEditor.cs" />
+	  <Compile Include="..\WinForms.Shared\Design\ListBoxEditorBase.cs" Link="UI\ListBoxEditorBase.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="..\README.md" Pack="true" PackagePath="\docs" />
+		<None Include="..\Images.Shared\SAL.100.png" Pack="true" PackagePath="\docs" />
+	</ItemGroup>
+
+	<PropertyGroup Condition="'$(Configuration)'=='Release'">
+		<Optimize>true</Optimize>
+		<PublishSingleFile>true</PublishSingleFile>
+		<TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Version)' == '1.0.0.0'">
+		<!--This Hack is added to change output folder for local builds because Directory.Build.props file is maintained centrally using shared project-->
+		<OutputPath>$(SolutionDir)..\..\bin\$(SolutionName)</OutputPath>
+	</PropertyGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+		<AssemblyAttributes Include="AssemblyMetadata">
+			<_Parameter1>ProjectUrl</_Parameter1>
+			<_Parameter2>https://github.com/DKorablin/Plugin.SqlSettingsProvider</_Parameter2>
+		</AssemblyAttributes>
+	</ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'net35'">
+		<Reference Include="System.Design"/>
+		<Reference Include="System.Windows.Forms"/>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="SAL.Flatbed">
+			<ExcludeAssets>runtime</ExcludeAssets>
+		</PackageReference>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="UI\" />
+	</ItemGroup>
+</Project>

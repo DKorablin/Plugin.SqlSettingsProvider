@@ -13,7 +13,7 @@ namespace Plugin.SqlSettingsProvider.Bll
 {
 	public class SqlDataSource
 	{
-		/// <summary>Размер буфера</summary>
+		/// <summary>Maximum buffer size</summary>
 		private const Int32 BufferLength = 1024;
 		private readonly Plugin _plugin;
 		private readonly Object _identityLock = new Object();
@@ -54,9 +54,9 @@ namespace Plugin.SqlSettingsProvider.Bll
 		public SqlDataSource(Plugin plugin)
 			=> this._plugin = plugin;
 
-		/// <summary>Получить идентификатор плагина</summary>
-		/// <param name="plugin">Интерфейс плагина, ряд по которому необходимо найти</param>
-		/// <returns>Идентификатор плагина</returns>
+		/// <summary>Get the plugin ID</summary>
+		/// <param name="plugin">The plugin interface for which to find the row</param>
+		/// <returns>The plugin ID</returns>
 		public Int32 this[IPluginDescription plugin]
 		{
 			get
@@ -78,27 +78,27 @@ namespace Plugin.SqlSettingsProvider.Bll
 			}
 		}
 
-		/// <summary>Сохранить значение плагина</summary>
-		/// <param name="plugin">Интерфейс плагина, параметр по которому необходимо сохранить</param>
-		/// <param name="key">Ключ значения в плагине по которому сохранить значение</param>
-		/// <param name="value">Значение ключа</param>
+		/// <summary>Save plugin value</summary>
+		/// <param name="plugin">Plugin interface for which to save</param>
+		/// <param name="key">Plugin value key for which to save</param>
+		/// <param name="value">Key value</param>
 		public void SavePluginParameter(IPluginDescription plugin, String key, Byte[] value)
 			=> this.SavePluginParameter(this.UserID, this.ApplicationID, this[plugin], key, value);
 
-		/// <summary>Загрузить значение плагина</summary>
-		/// <param name="plugin">Интерфейс плагина, параметры по которому необходимо загрузить</param>
-		/// <param name="key">Ключ по которому надо получить значение</param>
-		/// <returns>Массив параметров</returns>
+		/// <summary>Load plugin value</summary>
+		/// <param name="plugin">Plugin interface for loading parameters</param>
+		/// <param name="key">Key for getting the value</param>
+		/// <returns>Parameter array</returns>
 		public IEnumerable<KeyValuePair<String,Byte[]>> LoadPluginParameters(IPluginDescription plugin, String key)
 			=> this.LoadPluginParameters(this.UserID, this.ApplicationID, this[plugin], key);
 
-		/// <summary>Сохранить значение плагина</summary>
-		/// <param name="userId">Идентификатор пользователя</param>
-		/// <param name="applicationId">Идентификатор приложения</param>
-		/// <param name="pluginId">Идентификатор плагина</param>
-		/// <param name="valueName">Ключ плагина значение которого надо сохранить</param>
-		/// <param name="value">Значение ключа плагина</param>
-		/// <returns>Резултат сохранения</returns>
+		/// <summary>Save plugin value</summary>
+		/// <param name="userId">User ID</param>
+		/// <param name="applicationId">Application ID</param>
+		/// <param name="pluginId">Plugin ID</param>
+		/// <param name="valueName">Plugin key whose value should be saved</param>
+		/// <param name="value">Plugin key value</param>
+		/// <returns>Save result</returns>
 		private void SavePluginParameter(Int32 userId, Int32 applicationId, Int32 pluginId, String valueName, Byte[] value)
 		{
 			ThreadPool.QueueUserWorkItem(SavePluginParameterAsync, new SaveParameterArgs(this, 0, userId, applicationId, pluginId, valueName, value));
@@ -141,12 +141,12 @@ namespace Plugin.SqlSettingsProvider.Bll
 			}
 		}
 
-		/// <summary>Загрузить значение плагина</summary>
-		/// <param name="userId">Идентификатор пользователя</param>
-		/// <param name="applicationId">Идентификатор приложения</param>
-		/// <param name="pluginId">Идентификатор плагина</param>
-		/// <param name="keyName">Ключ по которому надо получить значение</param>
-		/// <returns>Массив байт</returns>
+		/// <summary>Load plugin value</summary>
+		/// <param name="userId">User ID</param>
+		/// <param name="applicationId">Application ID</param>
+		/// <param name="pluginId">Plugin ID</param>
+		/// <param name="keyName">Key to retrieve the value by</param>
+		/// <returns>Byte array</returns>
 		private IEnumerable<KeyValuePair<String, Byte[]>> LoadPluginParameters(Int32 userId, Int32 applicationId, Int32 pluginId, String keyName)
 		{
 			using(DbConnector connector = this._plugin.Settings.CreateConnector())
@@ -161,7 +161,7 @@ namespace Plugin.SqlSettingsProvider.Bll
 				{
 					Dictionary<String, Byte[]> result = new Dictionary<String, Byte[]>();
 					while(reader.Read())
-						if(!reader.IsDBNull(1))//Только если значение определно. Т.к. источник данных может прислать список всех параметров без исключения null
+						if(!reader.IsDBNull(1))//Only if the value is defined. Because the data source can send a list of all parameters without exception, null
 						{
 							List<Byte> bytes = new List<Byte>();
 							Byte[] buffer = new Byte[SqlDataSource.BufferLength];
@@ -172,7 +172,7 @@ namespace Plugin.SqlSettingsProvider.Bll
 							{
 								count = reader.GetBytes(1, position, buffer, 0, buffer.Length);
 								position += count;
-								if(count < SqlDataSource.BufferLength)//TODO: Зачем это надо?
+								if(count < SqlDataSource.BufferLength)
 									Array.Resize(ref buffer, (Int32)count);
 
 								bytes.AddRange(buffer);
@@ -184,11 +184,11 @@ namespace Plugin.SqlSettingsProvider.Bll
 			}
 		}
 
-		/// <summary>Получить идентификатор плагина</summary>
-		/// <param name="userId">Идентификатор пользователя</param>
-		/// <param name="applicationId">Идентификатор приложения</param>
-		/// <param name="pluginName">Идентификатор плагина</param>
-		/// <returns>Идентификатор плагина из БД</returns>
+		/// <summary>Get plugin ID</summary>
+		/// <param name="userId">User ID</param>
+		/// <param name="applicationId">Application ID</param>
+		/// <param name="pluginName">Plugin ID</param>
+		/// <returns>Plugin ID from the database</returns>
 		private Int32 GetPluginId(Int32 userId, Int32 applicationId, String pluginName)
 		{
 			using(DbConnector connector = this._plugin.Settings.CreateConnector())
@@ -200,37 +200,35 @@ namespace Plugin.SqlSettingsProvider.Bll
 			}
 		}
 
-		/// <summary>Инициализация внутренних переменных источника данных</summary>
+		/// <summary>Initialization of internal variables of the data source</summary>
 		private void InitApplication()
 		{
 			if(this._applicationId.HasValue && this._userId.HasValue)
 				return;
-			else
-			{
-				//.NET5+
-				//AppDomain.CurrentDomain.SetPrincipalPolicy(System.Security.Principal.PrincipalPolicy.UnauthenticatedPrincipal)
-				String userName = Thread.CurrentPrincipal?.Identity.IsAuthenticated == true
-					? Thread.CurrentPrincipal.Identity.Name
-					: Environment.UserName;
 
-				String applicationName = String.Join("|", this._plugin.Host.Plugins.FindPluginType<IPluginKernel>().Select(p => p.Name).OrderBy(p => p).ToArray());
+			//.NET5+
+			//AppDomain.CurrentDomain.SetPrincipalPolicy(System.Security.Principal.PrincipalPolicy.UnauthenticatedPrincipal)
+			String userName = Thread.CurrentPrincipal?.Identity.IsAuthenticated == true
+				? Thread.CurrentPrincipal.Identity.Name
+				: Environment.UserName;
 
-				if(applicationName.Length == 0)
-					applicationName = "<Empty>";
+			String applicationName = String.Join("|", this._plugin.Host.Plugins.FindPluginType<IPluginKernel>().Select(p => p.Name).OrderBy(p => p).ToArray());
 
-				this._pluginsIdentity = this.GetApplicationPlugins(userName, applicationName, out Int32 userId, out Int32 applicationId);
+			if(applicationName.Length == 0)
+				applicationName = "<Empty>";
 
-				this._userId = userId;
-				this._applicationId = applicationId;
-			}
+			this._pluginsIdentity = this.GetApplicationPlugins(userName, applicationName, out Int32 userId, out Int32 applicationId);
+
+			this._userId = userId;
+			this._applicationId = applicationId;
 		}
 
-		/// <summary>Получение параметров приложения для ускоренной загрузки значений плагинов</summary>
-		/// <param name="login">Логин</param>
-		/// <param name="applicationName">Наименование приложения</param>
-		/// <param name="userId">Идентификатор логина в БД</param>
-		/// <param name="applicationId">Издентификатор приложения в БД</param>
-		/// <returns>Массив изентификаторов и наименований плагинов</returns>
+		/// <summary>Getting application parameters for faster loading of plugin values</summary>
+		/// <param name="login">Login</param>
+		/// <param name="applicationName">Application name</param>
+		/// <param name="userId">Login ID in the database</param>
+		/// <param name="applicationId">Application ID in the database</param>
+		/// <returns>Array of plugin identifiers and names</returns>
 		private Dictionary<String, Int32> GetApplicationPlugins(String login, String applicationName, out Int32 userId, out Int32 applicationId)
 		{
 			using(DbConnector connector = this._plugin.Settings.CreateConnector())

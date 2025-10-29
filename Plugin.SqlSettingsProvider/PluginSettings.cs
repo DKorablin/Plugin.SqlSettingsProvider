@@ -69,8 +69,8 @@ namespace Plugin.SqlSettingsProvider
 
 		public Boolean IsValid => this.ProviderName != null && this.ConnectionString != null;
 
-		/// <summary>Создать подключение к источнику данных</summary>
-		/// <returns>Подключение к источнику данных</returns>
+		/// <summary>Create a connection to a data source</summary>
+		/// <returns>Connect to a data source</returns>
 		internal DbConnector CreateConnector()
 		{
 			DbConnector result = new DbConnector(this.ProviderName, this.ConnectionString);
@@ -78,7 +78,7 @@ namespace Plugin.SqlSettingsProvider
 			return result;
 		}
 
-		/// <summary>Подключения к источнику данных</summary>
+		/// <summary>Data source connections</summary>
 		internal DbConnection CreateConnection()
 		{
 			DbProviderFactory factory = DbProviderFactories.GetFactory(this.ProviderName);
@@ -87,7 +87,7 @@ namespace Plugin.SqlSettingsProvider
 			return result;
 		}
 
-		/// <summary>Комманда для выполнения в источнике данных</summary>
+		/// <summary>Command to execute in the data source</summary>
 		internal DbCommand CreateCommand(DbConnection connection)
 		{
 			DbProviderFactory factory = DbProviderFactories.GetFactory(this.ProviderName);

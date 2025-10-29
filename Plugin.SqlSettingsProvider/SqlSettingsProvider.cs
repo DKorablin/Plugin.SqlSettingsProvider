@@ -82,16 +82,15 @@ namespace Plugin.SqlSettingsProvider
 				PropertyInfo[] properties = settings.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public);
 				foreach(PropertyInfo property in properties)
 					if(property.CanWrite)
-					{//TODO: Похоже тут по каждому полю идёт запрос в БД...
+					{//TODO: It looks like there's a database query for each field here...
 						Object value = this.LoadAssemblyParameterI(property.Name);
 						try
 						{
 							property.SetValue(settings, value, null);
 						} catch(ArgumentException exc)
-						{//В случае изменения типа поля, необходимо продолжить загрузку параметров
+						{//If you change the field type, you must continue loading the parameters.
 							exc.Data.Add(property.Name, value == null ? "null" : value.ToString());
 							this._pluginHost.Trace.TraceData(TraceEventType.Error, 10, exc);
-							continue;
 						}
 					}
 			} finally
@@ -153,12 +152,12 @@ namespace Plugin.SqlSettingsProvider
 			this.SaveAssemblyParameterI(this._pluginWrapper, key, value);
 		}
 
-		/// <summary>Сохранение параметров сборки в хранилище</summary>
-		/// <param name="settings">Объект настроек плагина</param>
+		/// <summary>Saving build parameters to storage</summary>
+		/// <param name="settings">Plugin settings object</param>
 		void ISettingsProvider.SaveAssemblyParameters()
 		{
 			if(this._settingsChanged != null)
-				this._pluginHost.Trace.TraceEvent(TraceEventType.Verbose, 9, $"Plugin {this._pluginWrapper.ID} supports INotifyPropertyChanged. Porperies saved automatically");
+				this._pluginHost.Trace.TraceEvent(TraceEventType.Verbose, 9, $"Plugin {this._pluginWrapper.ID} supports INotifyPropertyChanged. Properties saved automatically");
 
 			IPluginSettings settings = (IPluginSettings)this._pluginWrapper.Instance;
 
@@ -193,7 +192,7 @@ namespace Plugin.SqlSettingsProvider
 
 		private void SaveAssemblyParameterI(IPluginDescription plugin, String key, Object value)
 		{
-			if(value != null)//Try to save enum as undelying type
+			if(value != null)//Try to save enum as underlying type
 			{
 				Type valueType = value.GetType();
 				if(valueType.IsEnum)
@@ -206,8 +205,8 @@ namespace Plugin.SqlSettingsProvider
 			this._pluginHost.DataSource.SavePluginParameter(plugin, key, bytes);
 		}
 
-		/// <summary>Проверка свойства на возможность сохранения в SettingsProvider'е</summary>
-		/// <param name="property">Информация о свойстве</param>
+		/// <summary>Checking if a property can be saved in the SettingsProvider</summary>
+		/// <param name="property">Property information</param>
 		/// <returns></returns>
 		private static Boolean CanSaveProperty(PropertyInfo property)
 			=> property.CanRead && property.CanWrite && property.GetSetMethod(false) != null;
