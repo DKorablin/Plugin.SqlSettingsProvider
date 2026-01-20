@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFrameworks>net35;nwt8.0-windows</TargetFrameworks>
+		<TargetFrameworks>net35;net8.0-windows</TargetFrameworks>
 		<OutputType>Library</OutputType>
 		<RootNamespace>Plugin.SqlSettingsProvider</RootNamespace>
 		<Deterministic>false</Deterministic>
