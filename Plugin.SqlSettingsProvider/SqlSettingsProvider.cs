@@ -27,7 +27,7 @@ namespace Plugin.SqlSettingsProvider
 			PropertyInfo property = settings.Settings.GetType().GetProperty(propertyName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly);
 
 			if(property == null)
-				this._pluginHost.Trace.TraceEvent(TraceEventType.Verbose, 9, String.Format("Property {0} not found in plugin {1} ", e.PropertyName, this._pluginWrapper.ID));
+				this._pluginHost.Trace.TraceEvent(TraceEventType.Verbose, 9, "Property {0} not found in plugin {1} ", e.PropertyName, this._pluginWrapper.ID);
 			else if(SqlSettingsProvider.CanSaveProperty(property))
 			{
 				Object value = property.GetValue(settings.Settings, null);
@@ -44,7 +44,7 @@ namespace Plugin.SqlSettingsProvider
 			foreach(KeyValuePair<String, Byte[]> result in this._pluginHost.DataSource.LoadPluginParameters(this._pluginWrapper, key))
 				return result.Key == key
 					? new MemoryStream(result.Value)
-					: throw new ArgumentException($"Получен ключ {result.Key} вместо {key}");
+					: throw new ArgumentException($"Received key=\"{result.Key}\" instead of \"{key}\"");
 			return null;
 		}
 
@@ -185,7 +185,7 @@ namespace Plugin.SqlSettingsProvider
 						this._pluginHost.Trace.TraceData(TraceEventType.Error, 10, exc);
 						return null;
 					} else
-					throw new ArgumentException($"Got key {result.Key} instead of {key}");
+						throw new ArgumentException($"Got key {result.Key} instead of {key}");
 			return null;
 			//return Plugin.DeserializeObject(this.Sql.LoadPluginParameter(plugin, key));
 		}

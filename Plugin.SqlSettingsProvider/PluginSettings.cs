@@ -2,13 +2,20 @@
 using System.ComponentModel;
 using System.Data;
 using System.Data.Common;
-using System.Drawing.Design;
-using System.Web.UI.Design;
 using AlphaOmega.Data;
 using AlphaOmega.Design;
+using System.ComponentModel.Design;
+
+#if NETFRAMEWORK
+using System.Drawing.Design;
+#else
+using System.Windows.Forms.Design;
+using System.Drawing.Design;
+#endif
 
 namespace Plugin.SqlSettingsProvider
 {
+	/// <summary>Configuration settings for SQL settings provider plugin</summary>
 	public class PluginSettings
 	{
 		private readonly Plugin _plugin;
@@ -18,9 +25,10 @@ namespace Plugin.SqlSettingsProvider
 		internal PluginSettings(Plugin plugin)
 			=> this._plugin = plugin;
 
+		/// <summary>Connection string to the data source</summary>
 		[Category("Data")]
 		[Description("Connection string to the data source")]
-		[Editor(typeof(ConnectionStringEditor), typeof(UITypeEditor))]
+		[Editor(typeof(MultilineStringEditor), typeof(UITypeEditor))]
 		public String ConnectionString
 		{
 			get => this._connectionString;
@@ -33,6 +41,7 @@ namespace Plugin.SqlSettingsProvider
 			}
 		}
 
+		/// <summary>Data source connection provider</summary>
 		[Category("Data")]
 		[Description("Data source connection provider. (.NET5+ dynamic data providers are not supported)")]
 		[Editor(typeof(AdoNetProviderEditor), typeof(UITypeEditor))]
@@ -67,6 +76,7 @@ namespace Plugin.SqlSettingsProvider
 			}
 		}
 
+		/// <summary>Gets a value indicating whether the settings are valid</summary>
 		public Boolean IsValid => this.ProviderName != null && this.ConnectionString != null;
 
 		/// <summary>Create a connection to a data source</summary>

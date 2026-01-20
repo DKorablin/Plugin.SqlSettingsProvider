@@ -1,4 +1,4 @@
--- Перенос значения параметров плагина от одного клиента в параметры плагина по умолчанию
+п»ї-- РџРµСЂРµРЅРѕСЃ Р·РЅР°С‡РµРЅРёСЏ РїР°СЂР°РјРµС‚СЂРѕРІ РїР»Р°РіРёРЅР° РѕС‚ РѕРґРЅРѕРіРѕ РєР»РёРµРЅС‚Р° РІ РїР°СЂР°РјРµС‚СЂС‹ РїР»Р°РіРёРЅР° РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
 UPDATE sal.PluginValueNames
 SET
 	sal.PluginValueNames.Value=settings.PluginValues2.Value
@@ -6,6 +6,6 @@ FROM sal.PluginValueNames
 INNER JOIN settings.PluginValues2
 ON sal.PluginValueNames.ValueID=settings.PluginValues2.ValueID
 WHERE
-	sal.PluginValueNames.PluginID=30 --Идентификатор плагина значения которого необходимо перенести
-	AND settings.PluginValues2.UserID=1--Идентификатор пользователя от которого необходимо перенести значения
-	AND settings.PluginValues2.ApplicationID=5--Идентификатор приложения из которого перенести значения
+	sal.PluginValueNames.PluginID=30 --РРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РїР»Р°РіРёРЅР° Р·РЅР°С‡РµРЅРёСЏ РєРѕС‚РѕСЂРѕРіРѕ РЅРµРѕР±С…РѕРґРёРјРѕ РїРµСЂРµРЅРµСЃС‚Рё
+	AND settings.PluginValues2.UserID=1--РРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РѕС‚ РєРѕС‚РѕСЂРѕРіРѕ РЅРµРѕР±С…РѕРґРёРјРѕ РїРµСЂРµРЅРµСЃС‚Рё Р·РЅР°С‡РµРЅРёСЏ
+	AND settings.PluginValues2.ApplicationID=5--РРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РїСЂРёР»РѕР¶РµРЅРёСЏ РёР· РєРѕС‚РѕСЂРѕРіРѕ РїРµСЂРµРЅРµСЃС‚Рё Р·РЅР°С‡РµРЅРёСЏ

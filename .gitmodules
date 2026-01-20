@@ -1,12 +1,12 @@
 [submodule "Plugin.SqlSettingsProvider/WinForms.Shared"]
 	path = Plugin.SqlSettingsProvider/WinForms.Shared
-	url = https://DKorablin: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@github.com/DKorablin/WinForms.Shared.git
+	url = https://github.com/DKorablin/WinForms.Shared.git
 [submodule "WinForms.Shared"]
 	path = WinForms.Shared
-	url = https://DKorablin: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@github.com/DKorablin/WinForms.Shared.git
+	url = https://github.com/DKorablin/WinForms.Shared.git
 [submodule "Data.Shared"]
 	path = Data.Shared
-	url = https://DKorablin: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@github.com/DKorablin/Data.Shared.git
+	url = https://github.com/DKorablin/Data.Shared.git
 [submodule "Images.Shared"]
 	path = Images.Shared
 	url = https://github.com/DKorablin/Images.Shared
