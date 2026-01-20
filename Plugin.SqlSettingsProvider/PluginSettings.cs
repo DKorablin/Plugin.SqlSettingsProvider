@@ -4,9 +4,13 @@ using System.Data;
 using System.Data.Common;
 using AlphaOmega.Data;
 using AlphaOmega.Design;
+using System.ComponentModel.Design;
+
 #if NETFRAMEWORK
 using System.Drawing.Design;
-using System.Web.UI.Design;
+#else
+using System.Windows.Forms.Design;
+using System.Drawing.Design;
 #endif
 
 namespace Plugin.SqlSettingsProvider
@@ -24,9 +28,7 @@ namespace Plugin.SqlSettingsProvider
 		/// <summary>Connection string to the data source</summary>
 		[Category("Data")]
 		[Description("Connection string to the data source")]
-#if NETFRAMEWORK
-		[Editor(typeof(ConnectionStringEditor), typeof(UITypeEditor))]
-#endif
+		[Editor(typeof(MultilineStringEditor), typeof(UITypeEditor))]
 		public String ConnectionString
 		{
 			get => this._connectionString;
@@ -42,9 +44,7 @@ namespace Plugin.SqlSettingsProvider
 		/// <summary>Data source connection provider</summary>
 		[Category("Data")]
 		[Description("Data source connection provider. (.NET5+ dynamic data providers are not supported)")]
-#if NETFRAMEWORK
 		[Editor(typeof(AdoNetProviderEditor), typeof(UITypeEditor))]
-#endif
 		public String ProviderName
 		{
 			get => this._providerName;
