@@ -9,7 +9,7 @@ To interact with data source stored procedures are used. That's why you can add 
 To install the SQL Settings Provider Plugin, follow these steps:
 1. Download the latest release from the [Releases](https://github.com/DKorablin/Plugin.SqlSettingsProvider/releases)
 2. Extract the downloaded ZIP file to a desired location.
-3. Add tables and stored procedures to your SQL Server database using the provided [scrript files](Plugin.SqlSettingsProvider/Scripts).
+3. Add tables and stored procedures to your SQL Server database using the provided [script files](Plugin.SqlSettingsProvider/Scripts).
 4. Use the provided [Flatbed.Dialog (Lite)](https://dkorablin.github.io/Flatbed-Dialog-Lite) executable or download one of the supported host applications:
 	- [Flatbed.Dialog](https://dkorablin.github.io/Flatbed-Dialog)
 	- [Flatbed.MDI](https://dkorablin.github.io/Flatbed-MDI)
