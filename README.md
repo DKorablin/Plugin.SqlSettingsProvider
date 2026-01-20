@@ -1,4 +1,4 @@
-# SQL Settings plugin provider
+﻿# SQL Settings plugin provider
 [![Auto build](https://github.com/DKorablin/Plugin.SqlSettingsProvider/actions/workflows/release.yml/badge.svg)](https://github.com/DKorablin/Plugin.SqlSettingsProvider/releases/latest)
 
 Despite the fact that the provider is written in pure ADO.NET stored procedures are used to interact with tables so it's unlikely that the provider will work with another DBMS other than Microsoft SQL Server.

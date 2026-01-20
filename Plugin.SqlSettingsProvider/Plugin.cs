@@ -63,11 +63,9 @@ namespace Plugin.SqlSettingsProvider
 				throw new InvalidOperationException("Cant configure self");
 			else if(this.DataSource == null)
 				return null;//The plugin is not configured
-			else
-			{
-				IPluginDescription pluginWrapper = this.GetPluginWrapper(plugin);
-				return new SqlSettingsProvider(this, pluginWrapper);
-			}
+
+			IPluginDescription pluginWrapper = this.GetPluginWrapper(plugin);
+			return new SqlSettingsProvider(this, pluginWrapper);
 		}
 
 		Boolean IPlugin.OnConnection(ConnectMode mode)
