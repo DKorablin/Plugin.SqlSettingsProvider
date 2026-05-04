@@ -9,12 +9,10 @@ namespace Plugin.SqlSettingsProvider
 	/// <summary>Plugin for saving and loading settings from MSSQL</summary>
 	public class Plugin : ISettingsPluginProvider, IPluginSettings<PluginSettings>
 	{
-		private TraceSource _trace;
 		private PluginSettings _settings;
 		private SqlDataSource _dataSource;
 
-		internal TraceSource Trace
-			=> this._trace ?? (this._trace = Plugin.CreateTraceSource<Plugin>());
+		internal ITraceSource Trace { get; }
 
 		internal IHost Host { get; }
 
@@ -52,8 +50,11 @@ namespace Plugin.SqlSettingsProvider
 			set { this._dataSource = value; }
 		}
 
-		public Plugin(IHost host)
-			=> this.Host = host ?? throw new ArgumentNullException(nameof(host));
+		public Plugin(IHost host, ITraceSource trace)
+		{
+			this.Host = host ?? throw new ArgumentNullException(nameof(host));
+			this.Trace = trace ?? throw new ArgumentNullException(nameof(trace));
+		}
 
 		ISettingsProvider ISettingsPluginProvider.GetSettingsProvider(IPlugin plugin)
 		{
@@ -95,15 +96,6 @@ namespace Plugin.SqlSettingsProvider
 		{
 			IPluginDescription result = this.Host.Plugins.FirstOrDefault(p => p.Instance == plugin);
 			return result ?? throw new ArgumentNullException($"Assembly {plugin.GetType().Assembly.GetName().Name} not found in list of loaded plugins");
-		}
-
-		private static TraceSource CreateTraceSource<T>(String name = null) where T : IPlugin
-		{
-			TraceSource result = new TraceSource(typeof(T).Assembly.GetName().Name + name);
-			result.Switch.Level = SourceLevels.All;
-			result.Listeners.Remove("Default");
-			result.Listeners.AddRange(System.Diagnostics.Trace.Listeners);
-			return result;
 		}
 	}
 }
